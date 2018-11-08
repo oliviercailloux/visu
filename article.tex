@@ -1,0 +1,43 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[version=last, pagesize, twoside=off, bibliography=totoc, DIV=calc, fontsize=12pt, a4paper, french, english]{scrartcl}
+\input{preamble/packages}
+\input{preamble/math_basics}
+%\input{preamble/math_mine}
+\input{preamble/redac}
+%\input{preamble/draw}
+
+\begin{document}
+\title{%
+	\texorpdfstring{
+		Visu blah%
+		\thanks{
+			This is an author version.
+		}
+	}{%
+		Visu
+	}
+}
+\author{Renaud Blanch}
+\affil{Affil2}
+\author{Olivier Cailloux}
+\affil{Université Paris-Dauphine, PSL Research University, CNRS, LAMSADE, 75016 PARIS, FRANCE\\
+	\href{mailto:olivier.cailloux@dauphine.fr}{olivier.cailloux@dauphine.fr}
+}
+\author{Sylvain Bouveret}
+\affil{Affil2}
+\maketitle
+%\renewcommand{\suchthat}{\ifnum\currentgrouptype=16 \;\middle|\;\else\mid\fi}
+
+\section{Introduction}
+\label{sec:intro}
+Voting rules are prominent objects used in social choice theory to aggregate preference information and obtain a societal choice.
+
+Various rules treat the profile, the information given as input, differently, according to the transformations considered to not change the information.
+
+Refs: \citet{sen_social_1986, sen_informational_1974, sen_weights_1977, blackorby_social_1984}.
+
+\section{References}
+\bibliography{Visu}
+
+\end{document}
+

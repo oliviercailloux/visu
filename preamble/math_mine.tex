@@ -1,0 +1,56 @@
+%Decision Theory (MCDA and SC)
+\newcommand{\allalts}{\mathscr{A}}
+\newcommand{\alts}{A}
+\newcommand{\dm}{d}
+
+%Social Choice
+%TODO unify cal and scr
+\newcommand{\allF}{\mathcal{F}}
+\newcommand{\allvoters}{\mathscr{N}}
+\newcommand{\voters}{N}
+%TODO bold math?
+\newcommand{\allprofs}{\mathbfcal{R}}
+\newcommand{\prof}{\mathbf{R}}
+\newcommand{\linors}{\mathcal{L}(\allalts)}
+
+%Axiomatics
+\newcommand{\pbasic}[1]{\prof^{#1}_\epsilon}
+\newcommand{\pelem}[1]{\prof^{#1}_e}
+\newcommand{\pcycl}[1]{\prof^{#1}_c}
+\newcommand{\pcycllong}[1]{\prof^{#1}_{cl}}
+\newcommand{\pinv}[1]{\overline{\prof_{#1}}}
+\newcommand{\alllang}{\mathcal{L}}
+\newcommand{\ltru}{\texttt{T}}
+\newcommand{\lfal}{\texttt{F}}
+\newcommand{\laxiom}[1]{\textsc{#1}}
+\newcommand{\lequiv}{\Vvdash}
+
+%Deliberated Judgement
+%TODO mathrel, etc.?
+\newcommand{\ileadsto}{\rightsquigarrow}
+\newcommand{\mleadsto}[1][\eta]{\rightsquigarrow_{#1}}
+\newcommand{\ibeats}{\vartriangleright}
+\newcommand{\mbeats}[1][\eta]{\vartriangleright_{#1}}
+
+%ARG TH
+\newcommand{\AF}{\mathcal{AF}}
+\newcommand{\labelling}{\mathcal{L}}
+\newcommand{\labin}{\textbf{in}\xspace}
+\newcommand{\labout}{\textbf{out}}
+\newcommand{\labund}{\textbf{undec}\xspace}
+\newcommand{\allargs}{A^*}
+\newcommand{\args}{A}
+\newcommand{\ar}{a}
+\newcommand{\ext}{\mathcal{E}}
+
+%MCDA
+\newcommand{\allcrits}{\mathcal{C}}
+\newcommand{\cat}[1]{C_{#1}}
+\newcommand{\cats}{\mathcal{C}}
+\newcommand{\alttoc}[2][x]{(#1 \xrightarrow{} #2)}
+\newcommand{\alttocat}[3]{(#2 \xrightarrow{#1} #3)}
+\newcommand{\alttoI}{(x \xrightarrow{} \left[\underline{C_x}, \overline{C_x}\right])}
+\newcommand{\alttocatdm}[3][t]{\left(#2 \thinspace \raisebox{-3pt}{$\xrightarrow{#1}$}\thinspace #3\right)}
+\newcommand{\alttocatatleast}[2]{\left(#1 \thinspace \raisebox{-3pt}{$\xrightarrow[]{≥}$}\thinspace #2\right)}
+\newcommand{\alttocatatmost}[2]{\left(#1 \thinspace \raisebox{-3pt}{$\xrightarrow[]{≤}$}\thinspace #2\right)}
+

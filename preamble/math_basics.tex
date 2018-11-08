@@ -1,0 +1,33 @@
+\newcommand{\R}{ℝ}
+\newcommand{\N}{ℕ}
+\newcommand{\powerset}[1]{\mathscr{P}(#1)}%TODO \mathscr rather than \mathcal: scr is rounder than cal (at least in XITS Math).
+%Powerset without zero.
+\newcommand{\powersetz}[1]{\mathscr{P}*(#1)}
+%Better than using the package braket because braket introduces possibly undesirable space. Then: $\set{x \in \R^2 \suchthat {|x|}<5}$.
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\suchthat}{\mathrel{}\middle|\mathrel{}}
+%TODO test Integer interval.
+\newcommand{\intvl}[1]{⟦#1⟧}
+%TODO test
+%\newcommand{\card}[1]{\lvert{}#1\rvert}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\card{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\AtBeginDocument{%
+	\renewcommand{\epsilon}{\varepsilon}
+% TODO we want straight form of \phi for mathematics, as recommended in UTR #25: Unicode support for mathematics.
+	\renewcommand{\phi}{\varphi}
+}
+
+% with amssymb, but I don’t want to use amssymb just for that.
+% \newcommand{\restr}[2]{{#1}_{\restriction #2}}
+%\newcommand{\restr}[2]{{#1\upharpoonright}_{#2}}
+%\newcommand{\restr}[2]{{#1|}_{#2}}%sometimes typed out incorrectly within \set.
+%TODO test https://tex.stackexchange.com/a/278631
+\newcommand\restr[2]{#1\raisebox{-.5ex}{$|$}_{#2}}
+%\newcommand{\restr}[2]{{#1}_{\vert #2}}%\vert errors when used within \Set and is typed out incorrectly within \set.
+
+
