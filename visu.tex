@@ -4,7 +4,7 @@
 \input{preamble/math_basics}
 \input{preamble/math_mine}
 \input{preamble/redac}
-%\input{preamble/draw}
+\input{preamble/draw}
 
 \begin{document}
 \title{%
@@ -36,7 +36,73 @@ Refs: \citet{sen_social_1986, sen_informational_1974, sen_weights_1977, blackorb
 
 \section{Profile and visual variables}
 Here we indicate which information a profile contains and how this corresponds to visual variables.
-When this will be done, we will choose how to continue.
+We have then to relate this to visual variables.
+
+We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over all alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all profiles is $\allprofs$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
+
+\begin{figure}[t]
+	\centering
+	\begin{tikzpicture}
+		\tikzset{prof matrix/.style={
+			matrix, column sep=3mm, row sep=2mm
+		}}
+		\tikzset{rank-vector/.style={
+			draw, rectangle, inner sep=0, outer sep=1mm
+		}}
+		
+		\path node[prof matrix] (profile) {
+			\path node {$R_1$};&
+			\path node {$R_2$};
+			\\
+			\path node {$a$};&
+			\path node {$a$};
+			\\
+			\path node {$b$};&
+			\path node {$c$};
+			\\
+			\path node {$c$};&
+			\path node {$b$};
+			\\
+		};
+		\path[draw, decorate, decoration={brace, mirror}] (profile.south west) -- (profile.south east);
+		\path ($(profile.south west)!.5!(profile.south east)$) ++ (0, -5mm) node {$\prof \in \linors^N$};
+		
+		\path (profile.north east) ++ (1.5cm, 0) node[prof matrix, anchor=north west] (rank-profile) {
+			&
+			\path node (header start) {1};&
+			\path node (header end) {2};
+			\\
+			\path node (alts start) {$a$};&
+			\path node (rv1 start) {1};&
+			\path node (rv1 end) {1};
+			\\
+			\path node {$b$};&
+			\path node (rv2 start) {2};&
+			\path node (rv2 end) {3};
+			\\
+			\path node (alts end) {$c$};&
+			\path node (rv3 start) {3};&
+			\path node (rv3 end) {2};
+			\\
+		};
+		\path node[draw, ellipse, dotted, inner sep=0, fit=(header start.north west) (header end.south east)] (N) {};
+		\path (N.north) node[anchor=south, inner sep=1mm] {$\allvoters$};
+		\path node[draw, ellipse, dotted, inner sep=0, fit=(alts start.north west) (alts end.south east)] (A) {};
+		\path (A.west) node[anchor=east, inner sep=1mm] {$\allalts$};
+		\foreach \i/\a in {1/a, 2/b, 3/c} {
+			\path node[rank-vector, fit=(rv\i\space start.north west) (rv\i\space end.south east)] (rv\i) {};
+			\path[<-, draw] (rv\i.east) -- ++(0.3cm, 0) node[anchor=west] {$\rprof_{\prof}(\a) \in [1, m]^N$};
+		}
+		\path[draw, decorate, decoration={brace, mirror, raise=2mm}] (rank-profile.south west) -- (rank-profile.south east);
+		\path ($(rank-profile.south west)!.5!(rank-profile.south east)$) ++ (0, -7mm) node {$\rprof_{\prof}$};
+	\end{tikzpicture}
+	\caption{A Profile and the corresponding Rank-Profile}
+	\label{fig:rankprofile}
+\end{figure}
+
+The information contained in a profile can be viewed in various ways. For example, instead of displaying the linear orders below each voters, as is most classical, the profile may be viewed as a matrix which indicates, for each alternative and voter, the rank of the alternative in the ranking of the voter \citep{cailloux_eliciting_2014}. See \cref{fig:rankprofile}.
+
+Interestingly, depending on the purpose of the visualization, the informational content to be taken into account may change. In order to let the viewer focus on the relevant information, the informational content in the profile may be reduced. For example, if the focus is to explain the Condorcet property, it may be adequate to display only information necessary to deduce the majority graph. Or, when being interested in scoring rules, it may be desired to display only, for each alternative, the ranks it obtained, that is, a multi-set of ranks, instead of who gave which ranks. Conversely, in some cases, such as in the context of exemplifying a given voting rule, it may be desired to show more than the information contained in the profile. A prominent example is the one of scoring rules: when the scores to be used are known, what is to be aggregated may be viewed as the scores given by each voter to each alternative. In yet other cases, the information to be visualized is both poorer (on some aspect) and richer (on some other aspect), as when showing, for each alternative, a multiset of scores attributed by the voters with no individual link between the voters and the scores.
 
 \section{Properties}
 Condorcet, monotonicity, scores
