@@ -1,0 +1,6 @@
+= Visu
+A draft about visualization and social choice.
+
+== References
+* Put here links to related papers (or directly in the article).
+
