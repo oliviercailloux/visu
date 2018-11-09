@@ -11,7 +11,7 @@
 	\texorpdfstring{
 		Visu blah%
 		\thanks{
-			This is an author version.
+			This is a draft.
 		}
 	}{%
 		Visu
@@ -38,7 +38,7 @@ Refs: \citet{sen_social_1986, sen_informational_1974, sen_weights_1977, blackorb
 Here we indicate which information a profile contains and how this corresponds to visual variables.
 We have then to relate this to visual variables.
 
-We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over all alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all profiles is $\allprofs$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
+We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over all alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A rank-profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all rank-profiles is $\allprofs$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
 
 \begin{figure}[t]
 	\centering
@@ -65,7 +65,7 @@ We consider defined a set of alternatives $\allalts$ and a set of voters $\allvo
 			\\
 		};
 		\path[draw, decorate, decoration={brace, mirror}] (profile.south west) -- (profile.south east);
-		\path ($(profile.south west)!.5!(profile.south east)$) ++ (0, -5mm) node {$\prof \in \linors^N$};
+		\path ($(profile.south west)!.5!(profile.south east)$) ++ (0, -5mm) node {$\prof \in \linors^\allvoters$};
 		
 		\path (profile.north east) ++ (1.5cm, 0) node[prof matrix, anchor=north west] (rank-profile) {
 			&
@@ -89,20 +89,25 @@ We consider defined a set of alternatives $\allalts$ and a set of voters $\allvo
 		\path (N.north) node[anchor=south, inner sep=1mm] {$\allvoters$};
 		\path node[draw, ellipse, dotted, inner sep=0, fit=(alts start.north west) (alts end.south east)] (A) {};
 		\path (A.west) node[anchor=east, inner sep=1mm] {$\allalts$};
-		\foreach \i/\a in {1/a, 2/b, 3/c} {
-			\path node[rank-vector, fit=(rv\i\space start.north west) (rv\i\space end.south east)] (rv\i) {};
-			\path[<-, draw] (rv\i.east) -- ++(0.3cm, 0) node[anchor=west] {$\rprof_{\prof}(\a) \in [1, m]^N$};
-		}
 		\path[draw, decorate, decoration={brace, mirror, raise=2mm}] (rank-profile.south west) -- (rank-profile.south east);
-		\path ($(rank-profile.south west)!.5!(rank-profile.south east)$) ++ (0, -7mm) node {$\rprof_{\prof}$};
+		\path ($(rank-profile.south west)!.5!(rank-profile.south east)$) ++ (0, -7mm) node {$\prof \in (\R^\allalts)^\allvoters$};
 	\end{tikzpicture}
 	\caption{A Profile and the corresponding Rank-Profile}
 	\label{fig:rankprofile}
 \end{figure}
 
 The information contained in a profile can be viewed in various ways. For example, instead of displaying the linear orders below each voters, as is most classical, the profile may be viewed as a matrix which indicates, for each alternative and voter, the rank of the alternative in the ranking of the voter \citep{cailloux_eliciting_2014}. See \cref{fig:rankprofile}.
+In general, we view a profile as an association of numbers to voters and alternatives: each voter is associated to a utility function $u_i \in \R^\allalts$, which describes the score this voter gives to each alternative. Thus, we denote a profile by $\prof = \profdet$. (Abusing notation, we reuse the same letter $\prof$ to denote this alternative view of a profile and reuse the letter $\allprofs$ to denote the set of all profiles.)
 
-Interestingly, depending on the purpose of the visualization, the informational content to be taken into account may change. In order to let the viewer focus on the relevant information, the informational content in the profile may be reduced. For example, if the focus is to explain the Condorcet property, it may be adequate to display only information necessary to deduce the majority graph. Or, when being interested in scoring rules, it may be desired to display only, for each alternative, the ranks it obtained, that is, a multi-set of ranks, instead of who gave which ranks. Conversely, in some cases, such as in the context of exemplifying a given voting rule, it may be desired to show more than the information contained in the profile. A prominent example is the one of scoring rules: when the scores to be used are known, what is to be aggregated may be viewed as the scores given by each voter to each alternative. In yet other cases, the information to be visualized is both poorer (on some aspect) and richer (on some other aspect), as when showing, for each alternative, a multiset of scores attributed by the voters with no individual link between the voters and the scores.
+Interestingly, depending on the purpose of the visualization, the informational content to be taken into account may change. In order to let the viewer focus on the relevant information, the informational content in the profile may be reduced. For example, if the focus is to explain the Condorcet property, it may be adequate to display only information necessary to deduce the majority graph. Or, when being interested in scoring rules, it may be desired to display only, for each alternative, the ranks it obtained, that is, a multi-set of ranks, neglecting the relation between the voters and the ranks. Conversely, in some cases, such as in the context of exemplifying a given voting rule, it may be desired to show more than the information contained in the profile. A prominent example is the one of scoring rules: when the scores to be used are known, what is to be aggregated may be viewed as the scores given by each voter to each alternative. In yet other cases, the information to be visualized is both poorer (on some aspect) and richer (on some other aspect), as when showing, for each alternative, a multiset of scores with no individual link between the voters and the scores.
+
+In this section we want to classify systematically visualization approaches depending on the informational content to be taken into account, in order to move towards being able to select an appropriate visualization in a principled way. To characterize informational content, we now define classes of equivalence in the set of profiles $\allprofs$. 
+
+To start with, consider \emph{Ordinally Measurable, Noncomparable Utilities}: in this interpretation, two profiles are equivalent iff they describe the same orderings for each voter. Formally, a profile $\prof = \profdet[u_i]$ is considered equivalent to any profile $\prof' = \profdet[\phi_i(u_i)]$ where $\phi_i: \R^\allalts → \R^\allalts, i \in N$ are non-decreasing transformations of the utilities. When using this interpretation of the informational content of a profile, only the orderings represented by the utilities count. This is the classical input information considered for a voting rule, as described above.
+
+One can also attribute more meaning to the numbers in the utility functions. In the \emph{Cardinally Measurable, Noncomparable Utilities} interpretation, the $\phi_i$ transformations must be of the form $\phi_i(u_i) = a_i + b_i u_i$ for some $a_i \in \R, b_i \in \R^+ = \R \cap (0, +\infty)$. The \emph{Cardinally Measurable, Fully Comparable Utilities} interpretation mandates that the $\phi_i$ transformation be of the form $\phi_i(u_i) = a + b u_i$ for some $a \in \R, b \in \R^+$, the same for all voters. In other words, it supplements the requirements of the previous interpretation by forcing equality of the transformations: $\phi_i = \phi_j \forall i, j \in \allvoters$. The \emph{Proportionally Measurable, Fully Comparable Utilities} interpretation \commentOC{We should decide whether we like that name.} allows only transformations of the form $\phi_i(u_i) = b u_i$, $b \in \R^+$. Other interpretations are defined by \citet{blackorby_social_1984}, from which we took these interpretations (to which we added the Proportionally Measurable interpretation).
+
+TODO: relate to visualization variables. Decide whether we should introduce other kinds of interpretations (which is probably useful only if we can think about relevant visualizations).
 
 \section{Properties}
 Condorcet, monotonicity, scores
