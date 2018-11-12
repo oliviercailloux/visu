@@ -1,9 +1,6 @@
 = Visu
 A draft about visualization and social choice.
 
-== References
-* Put here links to related papers (or directly in the article).
-
 == Webography
 * https://ncase.me/ballot/[to build a better ballot] explorable explanation (web)
 * Ka-Ping Yee's work http://zesty.ca/voting/sim/[Voting Simulation Visualizations], http://zesty.ca/voting/voteline/[Election Methods in Pictures]
