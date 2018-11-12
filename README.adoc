@@ -7,3 +7,8 @@ A draft about visualization and social choice.
 == Webography
 * https://ncase.me/ballot/[to build a better ballot] explorable explanation (web)
 * Ka-Ping Yee's work http://zesty.ca/voting/sim/[Voting Simulation Visualizations], http://zesty.ca/voting/voteline/[Election Methods in Pictures]
+
+== Videos
+* https://www.youtube.com/playlist?list=PLtzmb84AoqRSmv5o-eFNb3i9z64IuOjdX
+* https://www.youtube.com/watch?v=vfTJ4vmIsO4
+* https://www.youtube.com/watch?v=ZoGH7d51bvc
