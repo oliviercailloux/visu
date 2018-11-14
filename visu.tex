@@ -107,6 +107,25 @@ One can also attribute more meaning to the numbers in the utility functions. In 
 
 TODO: relate to visualization variables. Possibly, talk about how to switch from one representation to another (matrix of ranks to, say, the scores). Decide whether we should introduce other kinds of interpretations (which is probably useful only if we can think about relevant visualizations). For example, we might need the \emph{Majority} interpretation, such that two profiles are considered equivalent iff they have the same majority graph.
 
+
+\subsection{Graphic variables}
+Giving a (possibly interactive) graphical representation to a data set is a way to make the information it contains more graspable to laymen, provided the representation is sound.
+The design of such representations is studied by the Information Visualisation community.
+A key step of the \emph{InfoVis Pipeline}~\citep{Chi-Riedl-1998} which transforms data into visualisations is the \emph{visual mapping}, i.e.\ the step that encodes \emph{data attributes} with \emph{graphic variables}.
+For example, if each item of a data set is a person characterized by some attributes (age, genre, size, weight, etc.), we can encode a particular item with a graphic mark, and we may choose to represent the genre by its shape (e.g.\ square for men, circle for women), the weight by the abscissa, and the size by the ordinate.
+The set of graphic variables that can be used without too much interference is rather small: \citet[][chap.~II.c]{bertin-graphique} gave one of the first practical list that includes 8 variables.
+This list remains relevant today, even if it has been enriched latter to account for computer screens and animations~\citep[e.g.][chap.~5]{munzner}.
+
+A key observation made by Bertin is that all graphic variables are not equal in term of expressiveness.
+Some allow to judge wether two items are identical or not (e.g.\ they share the same shape), but others allow to tell wether one is bigger than the other, and even to quantify how much bigger it is (e.g.\ the abscissa of one mark is twice the abscissa of another one).
+A variable is \emph{associative} ($\equiv$) if it allows to represent different levels without inducing a visual hierarchy between those levels.
+A variable is \emph{selective} ($\neq$) if all items sharing a level (e.g.\ same color) can be perceived as a group and considered for inspection without the items of other levels interfering.
+A variable is \emph{ordered} ($O$) if we can order two items according to this variable, without relying on a lookup to a legend.
+Finally, a variable is \emph{quantitative} ($Q$) if we can quantify the difference between two items.
+
+
+
+
 \section{Properties}
 Condorcet, monotonicity, scores
 \section{How to represent ranks}
