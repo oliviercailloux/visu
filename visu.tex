@@ -123,7 +123,13 @@ A variable is \emph{selective} ($\neq$) if all items sharing a level (e.g.\ same
 A variable is \emph{ordered} ($O$) if we can order two items according to this variable, without relying on a lookup to a legend.
 Finally, a variable is \emph{quantitative} ($Q$) if we can quantify the difference between two items.
 
-
+The two cartesian dimensions (when working in the plane) of the \emph{position} are two variables that are the most expressive: they support $\equiv$, $\neq$, $O$ and $Q$.
+The \emph{size} of the mark is also very expressive: it supports $\neq$, $O$ and $Q$ but not $\equiv$ (large marks will pop up).
+The \emph{value}, i.e.\ the grey level independently of the hue, is also $\neq$ and $O$ but not $\equiv$ and not $Q$ (darker grey will pop up on a white background and we can not quantify how much darker or lighter is a grey from another grey).
+The \emph{texture} (the scale of a given pattern used to fill a mark) is $\equiv$, $neq$ and $O$, but not $Q$.
+The \emph{color}, i.e.\ the hue independently of the grey level, is both $\equiv$ and $\neq$, but can not be used for $O$ and $Q$.
+The \emph{orientation} can be used for $\equiv$ and, to a certain extend, for $\neq$, provided the shape of the mark does not present too much symmetries.
+Finally, the \emph{shape} of the mark can be used only for $\equiv$ if the various shapes are carefully chosen.
 
 
 \section{Properties}
