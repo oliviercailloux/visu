@@ -36,7 +36,7 @@ Various rules treat the profile, the information given as input, differently, ac
 Here we indicate which information a profile contains and how this corresponds to visual variables.
 We have then to relate this to visual variables.
 
-We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over all alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A rank-profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all rank-profiles is $\allprofs$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
+We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over all alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all profiles is $\allprofs = \linors^\allvoters$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
 
 \begin{figure}[t]
 	\centering
