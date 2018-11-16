@@ -142,6 +142,17 @@ Condorcet, monotonicity, scores
 \section{STV}
 
 \bibliography{Visu,manual}
+\appendix
+\section{Another possible starting point}
+We call \emph{snapshot} a particular piece of information to be shown to the user \commentOC{TODO find a better name}. Let us distinguish snapshots by kind, depending on the operations permitted.
+\begin{itemize}
+	\item A snapshot $s$ of kind “Orders per voter”, $s \in \weakors^\allvoters$, corresponds to the usual conception of a profile: it associates each voter to a weak order on the set of alternatives. \commentOC{I switched to weak orders, to be discussed.}
+	\item The kind “Intensities per voter”, $s = (s_1, s_2), s_1 \in \weakors^\allvoters, s_2 \in \weakors[\allalts × \allalts]^\allvoters$ permits, in supplement, for each voter, to compare differences of preference between two alternatives, for example, voter $i$ has a bigger difference of preference for $a$ compared to $b$ than for $c$ compared to $d$.
+	\item The kind “Comparable intensities”, $s = (s_1, s_2), s_1 \in \weakors^\allvoters, s_2 \subseteq (\allvoters × \allalts × \allalts)$ permits, in supplement, to compare differences of preferences across voters, for example, voter $i$’s difference of preference for $a$ compared to $b$ is bigger than voter $j$’s difference of preference for $c$ compared to $d$.
+	\item The kind “Scores per voter”, $s \in (\R^\allalts)^\allvoters$ associates each voter and alternative to an absolute score given by that voter to this alternative. It permits to compare intensities across voters, and…  (to be continued?)
+	\item The kind “Enumerate orders”, $s \subseteq \weakors$, only permits to enumerate weak orders, but not to know which voter each is associated to.
+	\item The kind “Majorities strengths”, $s \in \intvl{1, n}^(\allalts × \allalts)$, permits to associate to each pair of alternatives the number of persons who strictly prefer the first one to the second one.
+\end{itemize}
 
 \end{document}
 
