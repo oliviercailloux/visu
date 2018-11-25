@@ -36,7 +36,7 @@ Various rules treat the profile, the information given as input, differently, ac
 Here we indicate which information a profile contains and how this corresponds to visual variables.
 We have then to relate this to visual variables.
 
-We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over all alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all profiles is $\allprofs = \linors^\allvoters$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
+We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over the alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all profiles is $\allprofs = \linors^\allvoters$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
 
 \begin{figure}[t]
 	\centering
@@ -90,23 +90,61 @@ We consider defined a set of alternatives $\allalts$ and a set of voters $\allvo
 		\path[draw, decorate, decoration={brace, mirror, raise=2mm}] (rank-profile.south west) -- (rank-profile.south east);
 		\path ($(rank-profile.south west)!.5!(rank-profile.south east)$) ++ (0, -7mm) node {$\prof \in (\R^\allalts)^\allvoters$};
 	\end{tikzpicture}
-	\caption{A Profile and the corresponding Rank-Profile}
+	\caption{Alternative ways of viewing a profile (reusing a figure by \citet{cailloux_eliciting_2014}, with permission)}
 	\label{fig:rankprofile}
 \end{figure}
 
 The information contained in a profile can be viewed in various ways. For example, instead of displaying the linear orders below each voters, as is most classical, the profile may be viewed as a matrix which indicates, for each alternative and voter, the rank of the alternative in the ranking of the voter \citep{cailloux_eliciting_2014}. See \cref{fig:rankprofile}.
-In general, we view a profile as an association of numbers to voters and alternatives: each voter is associated to a utility function $u_i: \allalts → \R$, which describes the “score” this voter gives to each alternative. Thus, we denote a profile by $\prof = \profdet$. (Abusing notation, we reuse the same letter $\prof$ to denote this alternative view of a profile and reuse the letter $\allprofs$ to denote the set of all profiles.)
+More generally, we view a profile as a \emph{scoring profile}, an association of numbers to voters and alternatives: each voter is associated to a utility function $u_i: \allalts → \R$, which describes the “score” this voter gives to each alternative. Thus, we denote a scoring profile by $\prof = \profdet$. (Abusing notation, we reuse the same letter $\prof$ to denote a scoring profile under this more general conception and reuse the letter $\allprofs$ to denote the set of all scoring profiles.)
 
 Interestingly, depending on the purpose of the visualization, the informational content to be taken into account may change. In order to let the viewer focus on the relevant information, the informational content in the profile may be reduced. For example, if the focus is to explain the Condorcet property, it may be adequate to display only information necessary to deduce the majority graph. Or, when being interested in scoring rules, it may be desired to display only, for each alternative, the ranks it obtained, that is, a multi-set of ranks, neglecting the relation between the voters and the ranks. Conversely, in some cases, such as in the context of exemplifying a given voting rule, it may be desired to show more than the information contained in the profile. A prominent example is the one of scoring rules: when the scores to be used are known, what is to be aggregated may be viewed as the scores given by each voter to each alternative. In yet other cases, the information to be visualized is both poorer and richer (in different respects), as when showing, for each alternative, a multiset of scores with no individual link between the voters and the scores.
 
-In this section we want to classify systematically visualization approaches depending on the informational content to be taken into account, in order to move towards being able to select an appropriate visualization in a principled way. To characterize informational content, we now define classes of equivalence in the set of profiles $\allprofs$. 
+In this section we want to classify systematically visualization approaches depending on the informational content to be taken into account, in order to move towards being able to select an appropriate visualization in a principled way. Informational content can be characterized thanks to an equivalence relation on the set of scoring profiles $\allprofs$. 
+\begin{description}
+	\item[OM-NC] To start with, consider \emph{Ordinally Measurable, Noncomparable Utilities}: in this interpretation, two profiles are equivalent iff they describe the same orderings for each voter. Formally, a profile $\prof = \profdet[u_i]$ is considered equivalent to any profile $\prof' = \profdet[\phi_i(u_i)]$ where $\phi_i: \R^\allalts → \R^\allalts, i \in N$ are non-decreasing transformations of the utilities. When using this interpretation of the informational content of a profile, only the orderings represented by the utilities count. This is the classical input information considered for a voting rule, as described above.
+	\item[CM-NC] One can also attribute more meaning to the numbers in the utility functions. In the \emph{Cardinally Measurable, Noncomparable Utilities} interpretation, the $\phi_i$ transformations must be of the form $\phi_i(u_i) = a_i + b_i u_i$ for some $a_i \in \R, b_i \in \R^{*+} = \R \cap (0, +\infty)$.
+	\item[CM-FC] The \emph{Cardinally Measurable, Fully Comparable Utilities} interpretation mandates that the $\phi_i$ transformation be of the form $\phi_i(u_i) = a + b u_i$ for some $a \in \R, b \in \R^{*+}$, the same for all voters. In other words, it supplements the requirements of the previous interpretation by forcing equality of the transformations: $\phi_i = \phi_j \forall i, j \in \allvoters$.
+	\item[PM-FC] The \emph{Proportionally Measurable, Fully Comparable Utilities} interpretation \commentOC{We should decide whether we like that name.} allows only transformations of the form $\phi_i(u_i) = b u_i$, $b \in \R^{*+}$.
+	\item[MG] In the \emph{Majority Graph} interpretation, two profiles are equivalent iff they have the same majority graph.
+	\item[RC] In the \emph{Rank Count} interpretation, two profiles are equivalent iff, for each alternative and rank, the number of times the alternative receives the rank (is positioned at that rank by some voter) is the same in both profiles.
+	\item[SC] The \emph{Score Count} interpretation is similar to RC except the alternatives must receive each scores (not merely rank) the same number of times.
+	\item[SS] For the \emph{Sum Scores} interpretation, the sum of the scores is what matters: two profiles are equivalent iff, for each alternative, the sum of the scores received in both profile match.
+\end{description}
+Other interpretations are defined by \citet{blackorby_social_1984}, from which we took some of these interpretations.
 
-To start with, consider \emph{Ordinally Measurable, Noncomparable Utilities}: in this interpretation, two profiles are equivalent iff they describe the same orderings for each voter. Formally, a profile $\prof = \profdet[u_i]$ is considered equivalent to any profile $\prof' = \profdet[\phi_i(u_i)]$ where $\phi_i: \R^\allalts → \R^\allalts, i \in N$ are non-decreasing transformations of the utilities. When using this interpretation of the informational content of a profile, only the orderings represented by the utilities count. This is the classical input information considered for a voting rule, as described above.
+An equivalence relation $\sim$ on the set of scoring profiles is said to be finer than another equivalence relation $\sim'$ iff $\prof \sim \prof' ⇒ \prof \sim' \prof'$, thus, iff $\sim \subseteq \sim'$, or still equivalently, iff $\sim$ defines smaller equivalence classes than $\sim'$. In that case, the interpretation associated to $\sim$ is said to be richer than the interpretation associated to $\sim'$, and conversely, the latter interpretation is said to be poorer. Equivalently, an interpretation is richer than another one iff any profile transformation $\phi$ that does not cross the boundary of an equivalence class in the richer interpretation also does not cross equivalence classes in the poorer interpretation. Finally, it is still equivalent to say that an interpretation is richer than another one iff, given any equivalence class of the richer interpration, there is exactly one equivalence class of the poorer interpretation that contains all the given equivalence class.
 
-One can also attribute more meaning to the numbers in the utility functions. In the \emph{Cardinally Measurable, Noncomparable Utilities} interpretation, the $\phi_i$ transformations must be of the form $\phi_i(u_i) = a_i + b_i u_i$ for some $a_i \in \R, b_i \in \R^+ = \R \cap (0, +\infty)$. The \emph{Cardinally Measurable, Fully Comparable Utilities} interpretation mandates that the $\phi_i$ transformation be of the form $\phi_i(u_i) = a + b u_i$ for some $a \in \R, b \in \R^+$, the same for all voters. In other words, it supplements the requirements of the previous interpretation by forcing equality of the transformations: $\phi_i = \phi_j \forall i, j \in \allvoters$. The \emph{Proportionally Measurable, Fully Comparable Utilities} interpretation \commentOC{We should decide whether we like that name.} allows only transformations of the form $\phi_i(u_i) = b u_i$, $b \in \R^+$. Other interpretations are defined by \citet{blackorby_social_1984}, from which we took these interpretations (to which we added the Proportionally Measurable interpretation).
+\Cref{fig:poorer} shows the relation between some of the just defined interpretations.
+\begin{figure}
+	\begin{tikzpicture}
+		\path[edge from parent/.style={draw, ->}, sibling distance=27ex] node {CM-FC} child {
+			node {CM-NC} child {
+				node {OM-NC} child {
+					node {MG} child {
+						node {Condorcet Winners}
+					}
+				} child {
+					node {RC} child {
+						node (O) {Ordering-by-scoring-rule-$f$} child {
+							node {Winners-by-scoring-rule-$f$}
+						}
+					} 
+				}
+			} 
+		} child {
+			node {SC} child {
+				node (SS) {SS}
+			}
+		};
+		\path[draw, ->] (SS) -- (O);
+	\end{tikzpicture}
+	\caption{A part of the richer-than relation.}
+	\label{fig:poorer}
+\end{figure}
+
+One of our goals is to select appropriate visualizations given a profile $\prof$ and an interpretation $\sim$ on a (partly) principled basis. In order to do this, we must first, for each interpretation, indicate what is to be visualized in order to pay due attention to the equivalence classes defined by $\sim$. Indeed, the numbers shown in a profile, or that can be deduced from the information present in a profile, relate to each others in different ways depending on the interpretation: in some cases, only ordinal comparisons matter, in other cases, more can be drawn from these numbers. 
 
 TODO: relate to visualization variables. Possibly, talk about how to switch from one representation to another (matrix of ranks to, say, the scores). Decide whether we should introduce other kinds of interpretations (which is probably useful only if we can think about relevant visualizations). For example, we might need the \emph{Majority} interpretation, such that two profiles are considered equivalent iff they have the same majority graph.
-
 
 \subsection{Graphic variables}
 Giving a (possibly interactive) graphical representation to a data set is a way to make the information it contains more graspable to laymen, provided the representation is sound.
@@ -126,7 +164,7 @@ Finally, a variable is \emph{quantitative} ($Q$) if we can quantify the differen
 The two cartesian dimensions (when working in the plane) of the \emph{position} are two variables that are the most expressive: they support $\equiv$, $\neq$, $O$ and $Q$.
 The \emph{size} of the mark is also very expressive: it supports $\neq$, $O$ and $Q$ but not $\equiv$ (large marks will pop up).
 The \emph{value}, i.e.\ the grey level independently of the hue, is also $\neq$ and $O$ but not $\equiv$ and not $Q$ (darker grey will pop up on a white background and we can not quantify how much darker or lighter is a grey from another grey).
-The \emph{texture} (the scale of a given pattern used to fill a mark) is $\equiv$, $neq$ and $O$, but not $Q$.
+The \emph{texture} (the scale of a given pattern used to fill a mark) is $\equiv$, $\neq$ and $O$, but not $Q$.
 The \emph{color}, i.e.\ the hue independently of the grey level, is both $\equiv$ and $\neq$, but can not be used for $O$ and $Q$.
 The \emph{orientation} can be used for $\equiv$ and, to a certain extend, for $\neq$, provided the shape of the mark does not present too much symmetries.
 Finally, the \emph{shape} of the mark can be used only for $\equiv$ if the various shapes are carefully chosen.
@@ -134,15 +172,79 @@ Finally, the \emph{shape} of the mark can be used only for $\equiv$ if the vario
 \subsection{Relating informational content and visual variables}
 Depending on the task that the visualisation is used for, different kind and richness of information should be presented. For example, if the task is to find a Condorcet winner given a profile, it seems adequate to choose a visualisation which allows to clearly see the majority graph (an information somewhat poorer than the rank profile, in the sense that the information class is wider). If the task is to find the Borda winners given a profile, the visualisation could on the contrary enrich the rank profile by giving access to the scores, and it should do so by encouraging the user to perform quantitative comparisons (Q) rather than just permit ordinal comparisons as is adequate with ranks information or majority-graph information.
 
-\section{Properties}
-Condorcet, monotonicity, scores
-\section{How to represent ranks}
-\section{How to represent scores}
-\section{Pairwize and comparison}
-\section{STV}
+Given a scoring profile $\prof$ and an interpretation under the form of an equivalence relation $\sim$ on the set of profiles, we can define which information should be visible in a visualization of $\prof$ under $\sim$. To check that this summarized information is appropriate, we can check that any two equivalent profiles (according to $\sim$) have the same summarized information (in which case the summary contains no more than allowed); and that any two non equivalent profiles have different visualization (in which case the summary contains no less than allowed). 
+ Note that this does not guarantee absence of redundant information.
+We write $O$ to refer to an ordering, $I$ to indicate an information of interval scale type, and $A$ for absolute, where no transformation of the numbers is allowed. For example, under the OM-NC interpretation, it should be possible to determine, for each voter, the ordering of the alternatives, which we write as an ordering over the scores.
+\begin{description}
+	\item[CM-FC] $a, v, s→I$ (Interval scale)
+	\item[OM-NC] $a, v, s→O$
+	\item[MG] $a, a, w→A$ with $w$ (for “win”) the number of victories of $a$ against $b$ (the set of tuples to display may be restricted in various ways) OR other representation as illustrated in \cref{sec:grib}, how does this classify?
+	\item[RC] $a, r→O, c→A$ with $r$ the rank (in $\intvl{1, m}$), and $c$ (for “count”) the number of times this alt has received that rank OR other representation where it is explicit that the counts sum to a constant for every alternative, how does this classify? Perhaps $a, r→O, c→P$ with $P$ a proportion (in $[0, 1]$ and summing to one for a given alternative)
+	\item[SS] $a, ss→Q$
+	\item[SC] $a, s→Q, c→P$
+\end{description}
+
+\section{From equivalence relations to visualization}
+Here we describe how we go (as automatically as possible) from the descriptions given so far to visualizations such as those illustrated in \cref{sec:grib}.
+
+\section{Tasks and visualization}
+We wish to illustrate the usefulness of this classification on two kinds of tasks. 
+
+\subsection{Train to identify winners}
+The first kind of task is: train the user to compute some kind of winners by himself, given a profile viewed in a given way. This is done in two phases. First, in the training phase, the user is shown a profile, using some (possibly several) visualizations, to help him understand what is expected from him and how the winner is computed. Second, in the test phase, the user is shown only the profile with the imposed visualization, and has to find the winner by himself.
+
+For this kind of task, we expect it will be helpful to the user to see the profile with varying informational content (varying interpretations). For example, for computing the Condorcet winner, it might be helpful in the training phase to see the starting profile, the profile reduced to its majority graph information, and the resulting Condorcet winner. For computing the Borda winners, it might be helpful, starting from the profile considered as linear orders, to train the user by showing the profile enriched with the score information per voter, then go to the score per alternative view, and finally show the Borda winners.
+
+Generally, given a voting rule $f$, we search for an interpretation $\sim$, as poor as possible, that conserves the information useful to $f$: such that $f(\prof) = f(\prof')$ if $\prof \sim \prof'$. (This information is generally known in the literature from axiomatic analysis, or obvious, for most well-known voting rules.) In general, for voting rules (working on ordinal profiles), we search an interpretation poorer than or equal to OM-NC, with the exception of scoring rules. 
+
+The second kind of task is a comparison task.  Here we wish to illustrate visually the difference of “reasoning” of two voting rules. Using a principle similar to the one described above, we would search for an interpretation $\sim$ corresponding to the poorest equivalence relation (among our set of proposals described above) that conserves the information useful to $f$, and $\sim'$ corresponding to $f'$. Define $\sim^*$ the least upper bound of $\sim$ and $\sim'$, thus, the poorest equivalence relation that is richer than both $\sim$ and $\sim'$. Then we show, to illustrate $f$ and $f'$ on $\prof$, the interpretation of $\prof$ using $\sim^*$, then on one side of the screen, $\sim$ and the winners according to $f$; on the other side of the screen, $\sim'$ and the winners according to $f'$.
+
+Or something like that.
 
 \bibliography{Visu,manual}
 \appendix
+\section{Gribouilling}
+\label{sec:grib}
+Let’s see what we gribouilled, to help us with the task of categorization.
+
+\begin{figure}
+	\includegraphics[trim={400 300 150 700}, clip, width=\textwidth, height=9cm, keepaspectratio]{Gribouillis1.jpeg}
+	\caption{Gribouillis1}
+	\label{fig:g1}
+\end{figure}
+
+\Cref{fig:g1}, from top left, by line. $r$: rank, $v$: voter, $a$: alternative, $n$: nb times; $L$: line width, $SX$: sub-x, $C$: color, $XI\alpha$: x interval (varying interval size with minimal size=$\alpha$, $\alpha \in \{0, 1\}$), $T$: texture
+\begin{enumerate}
+	\item $v→X, a→Y, r→SYI0$
+	\item $v→X, a→Y, r→SXI0$
+	\item $v→X, a→Y, r→L$
+	\item $v→X, r→Y, a→C$
+	\item $voters / aggregation→X, v→SX, a→Y, r→SSX[X=left], n→SXI0[X=right], r→SY$
+	\item $n→XI1, r→T, a→Y$ (hence, visible that the sum is constant)
+	\item $v→X, a→Y, r→T$
+	\item $v→X, a→Y, r→SX$
+	\item $r→X, a→Y, n→SXI1, n→SYI1$
+\end{enumerate}
+
+\begin{figure}
+	\includegraphics[trim={0 200 0 600}, clip, width=\textwidth, height=9cm, keepaspectratio]{Gribouillis2.jpeg}
+	\caption{Gribouillis2}
+	\label{fig:g2}
+\end{figure}
+\Cref{fig:g2}.
+\begin{description}
+	\item[middle left] several sub-views with animations for transitions to next sub-view.
+	\begin{enumerate}
+		\item $a→X, v→Y, r→SX, r→SY$.
+		\item $Y$ indicates the majority relation [using cycle reduction], $X$ used to distinguish alternatives in the same majority cycle, and inside each zone, a vector shows ranks with $[v→SX, r→SSX, r→SSY]$. 
+		\item maj. rel. → Y, a→(x, y), v→SX, preference direction→arrow direction. 
+		\item same with pairs of arrows in opposite directions being striken (remaining arrows indicate who wins each pairwise battle).
+	\end{enumerate}
+	\item[bottom left] $votes/counts/sums→X, v→SX[X=left], a→Y, r→SSX[X=left], r→SY[X=left], n→SXI[X=center], r→SY[X=center], n→SXI[X=right], r→SYI[X=right]$ (change $Y$ interval size depending on score corresponding to the rank number, on example: half for second place, zero for third place). Then score is total resulting area. NB the center and right parts are not totally separate.
+	\item[top right] from rank-count (displayed horizontally), show scores (as 2D shapes) after transformation using a score function.
+	\item[middle] v→X, r→Y, a→C, r→SXI, r→SYI
+\end{description}
+
 \section{Another possible starting point}
 We call \emph{snapshot} a particular piece of information to be shown to the user \commentOC{TODO find a better name}. Let us distinguish snapshots by kind, depending on the operations permitted.
 \begin{itemize}
@@ -153,6 +255,29 @@ We call \emph{snapshot} a particular piece of information to be shown to the use
 	\item The kind “Enumerate orders”, $s \subseteq \weakors$, only permits to enumerate weak orders, but not to know which voter each is associated to.
 	\item The kind “Majorities strengths”, $s \in \intvl{1, n}^(\allalts × \allalts)$, permits to associate to each pair of alternatives the number of persons who strictly prefer the first one to the second one.
 \end{itemize}
+
+\section{Properties of visu}
+We consider a visualization of a profile under an interpretation as a function $V_\sim(\prof)$ that maps profiles to drawings, $V: \allprofs → D$, with $D$ the set of possible drawings (we do not describe $D$). We consider it is possible to apply a renaming to the resulting drawing and that it is an internal operation, thus, for any $V$, we consider defined, for any permutation $\sigma$ on $\allalts$, an internal operation $\sigma_D: V(\allprofs) → V(\allprofs)$, where $V(\allprofs) \subseteq D$ is the image of $V$.
+
+When the visualization should show a profile $\prof$ under an interpretation $\sim$, the visualization should satisfy the following properties.
+\begin{description}
+	\item[neutrality] The visualization treats all alternatives equally: if $\prof'$ contains the same information with alternatives renamed using a permutation $\sigma$ on $\allalts$, then $V(\prof') = \sigma(V(\prof))$.
+\end{description}
+
+\section{Representative elements}
+This is probably too complex wrt the added value (if any).
+
+We define for each interpretation a set containing exactly one element per equivalence class in $\sim$. Thus some mapping, which we leave implicit, maps any two profiles $\prof, \prof'$ in the same equivalence class to the same element of the set (there is an injection from $\allprofs/\sim$ to the set). We also indicate which operations are meaningful in the given interpretation, using the following notation. $D(E)$ represents the set $E$ together with a simple discrimination operation, meaning that the elements of $E$ can be distinguished, but no other operation is allowed. $W(E)$ represents the set of weak-orders on the set $E$, and indicates that, in supplement to distinguishing the elements, the elements of $E$ can be compared pairwize to determine which one is greater. $A(\succeq)$, for some weak-order $\succeq$ over some $E$, represents $(\R^+ ∪ \{\infty\})^\succ$, with $\succ$ the strict part of $\succeq$, and allows to determine, in supplement to an ordering over $E$, how many times an element of $E$ is greater than another (smaller) element of $E$. $I(E)$ represents $\set{(\succeq, f) \suchthat \succeq \in W(E), f \in A(\succeq^*) \text{ for some } \succeq^* \in W(\succ)}$: it allows, in supplement to $W(E)$, to determine how many times a difference between a pair of elements of $E$ is greater than another difference between a pair of elements of $E$, thus, it is an interval scale.
+\begin{description}
+	\item[CM-FC] $I(\allalts × \allvoters)$.
+	\item[CM-NC] $I(\allalts)^{D(\allvoters)}$. Example with one voter and utility function: $(a, 9), (b, 5), (c, 4)$. Then $\succ = \{(a, b), (b, c), (a, c)\}$, $\succeq^* = \{((a, c), (a, b)),\allowbreak ((a, b), (b, c)),\allowbreak ((a, c), (b, c)),\allowbreak ((a, b), (a, b)),\allowbreak ((b, c), (b, c)), ((a, c), (a, c))\}$, $A(\succeq^*) = (\R^+ ∪ \{\infty\})^{\succ^*}$, and $f = \{((a, c), (a, b), 5/4), ((a, b), (b, c), 4), ((a, c), (b, c), 5)\}$.
+	\item[OM-FC] $W(\allalts × \allvoters)$.
+	\item[OM-NC] $W(\allalts)^{D(\allvoters)}$, or equivalently, $W(\allalts × \allvoters)$ but restricted to the first $m$ ranks; or can be interpreted as cardinal scores (like CM-NC) but with some restrictions on the scores.
+	\item[MG] $\set{Abs(\succ) \suchthat \succ \in WS(\allalts)}$
+	\item[RC] …
+	\item[SS]
+	\item[SC]
+\end{description}
 
 \end{document}
 
