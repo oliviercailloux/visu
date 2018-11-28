@@ -97,6 +97,8 @@ We consider defined a set of alternatives $\allalts$ and a set of voters $\allvo
 The information contained in a profile can be viewed in various ways. For example, instead of displaying the linear orders below each voters, as is most classical, the profile may be viewed as a matrix which indicates, for each alternative and voter, the rank of the alternative in the ranking of the voter \citep{cailloux_eliciting_2014}. See \cref{fig:rankprofile}.
 More generally, we view a profile as a \emph{scoring profile}, an association of numbers to voters and alternatives: each voter is associated to a utility function $u_i: \allalts → \R$, which describes the “score” this voter gives to each alternative. Thus, we denote a scoring profile by $\prof = \profdet$. (Abusing notation, we reuse the same letter $\prof$ to denote a scoring profile under this more general conception and reuse the letter $\allprofs$ to denote the set of all scoring profiles.)
 
+In the following, we will also consider the (weighted) majority graph of a profile. The \emph{majority margin} $m$ is the function that maps each pair of candidates $(x, y) \in \allalts^2$ to the difference between the number of voters that prefer $x$ to $y$ and the number of voters that prefer $y$ to $x$, namely: $m(x, y) = |\{i\in N:\ x \pref_i y\}| - |\{i\in N:\ y \pref_i x\}|$.  The \emph{majority relation} is the binary relation $\succeq_{\Maj}$ defined as the subset of elements $(x, y) \in N^2$ such that $m(x, y) \geq 0$. The binary relation $\pref_{\Maj}$ is the strict part of $\succeq_{\Maj}$; therefore if $x \pref_{\Maj} y$, we say that $x$ (strictly) beats $y$ in a pairwise election (or comparison). The \emph{weighted majority graph} $\mathcal{WG}$ is the weighted directed graph representing $\succeq_{\Maj}$, with $m(x,y)$ being the weight of arc $(x, y)$. The majority graph $\mathcal{G}$ is the unweighted version of the weighted majority graph. A \emph{Condorcet winner} is a candidate that strictly beats every other candidate in a pairwise election, that is, the only candidate (if any) that has no incoming edge in $\mathcal{G}$.
+
 Interestingly, depending on the purpose of the visualization, the informational content to be taken into account may change. In order to let the viewer focus on the relevant information, the informational content in the profile may be reduced. For example, if the focus is to explain the Condorcet property, it may be adequate to display only information necessary to deduce the majority graph. Or, when being interested in scoring rules, it may be desired to display only, for each alternative, the ranks it obtained, that is, a multi-set of ranks, neglecting the relation between the voters and the ranks. Conversely, in some cases, such as in the context of exemplifying a given voting rule, it may be desired to show more than the information contained in the profile. A prominent example is the one of scoring rules: when the scores to be used are known, what is to be aggregated may be viewed as the scores given by each voter to each alternative. In yet other cases, the information to be visualized is both poorer and richer (in different respects), as when showing, for each alternative, a multiset of scores with no individual link between the voters and the scores.
 
 In this section we want to classify systematically visualization approaches depending on the informational content to be taken into account, in order to move towards being able to select an appropriate visualization in a principled way. Informational content can be characterized thanks to an equivalence relation on the set of scoring profiles $\allprofs$. 
@@ -105,6 +107,7 @@ In this section we want to classify systematically visualization approaches depe
 	\item[CM-NC] One can also attribute more meaning to the numbers in the utility functions. In the \emph{Cardinally Measurable, Noncomparable Utilities} interpretation, the $\phi_i$ transformations must be of the form $\phi_i(u_i) = a_i + b_i u_i$ for some $a_i \in \R, b_i \in \R^{*+} = \R \cap (0, +\infty)$.
 	\item[CM-FC] The \emph{Cardinally Measurable, Fully Comparable Utilities} interpretation mandates that the $\phi_i$ transformation be of the form $\phi_i(u_i) = a + b u_i$ for some $a \in \R, b \in \R^{*+}$, the same for all voters. In other words, it supplements the requirements of the previous interpretation by forcing equality of the transformations: $\phi_i = \phi_j \forall i, j \in \allvoters$.
 	\item[PM-FC] The \emph{Proportionally Measurable, Fully Comparable Utilities} interpretation \commentOC{We should decide whether we like that name.} allows only transformations of the form $\phi_i(u_i) = b u_i$, $b \in \R^{*+}$.
+	\item[WMG] In the \emph{Weighted Majority Graph} interpretation, two profiles are equivalent iff they have the same weighted majority graph.
 	\item[MG] In the \emph{Majority Graph} interpretation, two profiles are equivalent iff they have the same majority graph.
 	\item[RC] In the \emph{Rank Count} interpretation, two profiles are equivalent iff, for each alternative and rank, the number of times the alternative receives the rank (is positioned at that rank by some voter) is the same in both profiles.
 	\item[SC] The \emph{Score Count} interpretation is similar to RC except the alternatives must receive each scores (not merely rank) the same number of times.
@@ -120,8 +123,10 @@ An equivalence relation $\sim$ on the set of scoring profiles is said to be fine
 		\path[edge from parent/.style={draw, ->}, sibling distance=27ex] node {CM-FC} child {
 			node {CM-NC} child {
 				node {OM-NC} child {
-					node {MG} child {
-						node {Condorcet Winners}
+					node {WMG} child {
+                                        	node {MG} child {
+                                                	node {Condorcet Winner}
+                                                }
 					}
 				} child {
 					node {RC} child {
