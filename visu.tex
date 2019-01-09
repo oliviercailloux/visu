@@ -32,10 +32,11 @@ Voting rules are prominent objects used in social choice theory to aggregate pre
 
 Various rules treat the profile, the information given as input, differently, according to the transformations considered to not change the information \citep{sen_social_1986, sen_informational_1974, sen_weights_1977, blackorby_social_1984}.
 
-\section{Profile and visual variables}
-Here we indicate which information a profile contains and how this corresponds to visual variables.
-We have then to relate this to visual variables.
+In this article we define and categorize different visualizations using a systematic approach and investigate a principled way of choosing a visualization according to the information of interest in the profile. Although this principle does not fully automate the choice of the visualization -- because some aspects of choosing a right visualization are subjective or depend on the task in ways that we do not take into account -- the principle we propose permits to narrow down the possibilities, to partly justify the choice and to avoid mistakes, in a spirit similar to that which guides axiomatic analysis of voting rules. Our contribution might also be useful to those who wish to categorize visualizations for other purposes, as we propose a language that describes these visualizations and that permits to analyze them.
 
+We illustrate the usefulness of this approach with two tasks involving visualization.
+
+\section{Main concepts and notations}
 We consider defined a set of alternatives $\allalts$ and a set of voters $\allvoters$. The preference of a voter $i \in \allvoters$ is represented by a linear order $\pref_i \subseteq \allalts × \allalts$ (a transitive, connected and antisymmetric binary relation) over the alternatives. The set of all linear orders is denoted by $\linors$, thus $\pref_i \in \linors$. A profile $\prof: \allvoters → \linors$ associates each voter to her preference. The set of all profiles is $\allprofs = \linors^\allvoters$. A voting rule $f: \allprofs → \powersetz{\allalts}$, where $\powersetz{S}$ denotes the set of all non empty subsets of $S$, associates to each profile a set of winners, a non-empty subset of the alternatives. Sets are used to tolerate ties.
 
 \begin{figure}[t]
@@ -99,7 +100,33 @@ More generally, we view a profile as a \emph{scoring profile}, an association of
 
 In the following, we will also consider the (weighted) majority graph of a profile. The \emph{majority margin} $m$ is the function that maps each pair of candidates $(x, y) \in \allalts^2$ to the difference between the number of voters that prefer $x$ to $y$ and the number of voters that prefer $y$ to $x$, namely: $m(x, y) = |\{i\in N:\ x \pref_i y\}| - |\{i\in N:\ y \pref_i x\}|$.  The \emph{majority relation} is the binary relation $\succeq_{\Maj}$ defined as the subset of elements $(x, y) \in N^2$ such that $m(x, y) \geq 0$. The binary relation $\pref_{\Maj}$ is the strict part of $\succeq_{\Maj}$; therefore if $x \pref_{\Maj} y$, we say that $x$ (strictly) beats $y$ in a pairwise election (or comparison). The \emph{weighted majority graph} $\mathcal{WG}$ is the weighted directed graph representing $\succeq_{\Maj}$, with $m(x,y)$ being the weight of arc $(x, y)$. The majority graph $\mathcal{G}$ is the unweighted version of the weighted majority graph. A \emph{Condorcet winner} is a candidate that strictly beats every other candidate in a pairwise election, that is, the only candidate (if any) that has no incoming edge in $\mathcal{G}$.
 
-Interestingly, depending on the purpose of the visualization, the informational content to be taken into account may change. In order to let the viewer focus on the relevant information, the informational content in the profile may be reduced. For example, if the focus is to explain the Condorcet property, it may be adequate to display only information necessary to deduce the majority graph. Or, when being interested in scoring rules, it may be desired to display only, for each alternative, the ranks it obtained, that is, a multi-set of ranks, neglecting the relation between the voters and the ranks. Conversely, in some cases, such as in the context of exemplifying a given voting rule, it may be desired to show more than the information contained in the profile. A prominent example is the one of scoring rules: when the scores to be used are known, what is to be aggregated may be viewed as the scores given by each voter to each alternative. In yet other cases, the information to be visualized is both poorer and richer (in different respects), as when showing, for each alternative, a multiset of scores with no individual link between the voters and the scores.
+We denote by $\sim$ an equivalence relation on the set of profiles; an analysis of various such equivalence relation will be given below.
+
+In this article, a visualization is a function $v: \allprofs → J$, where $J$ is the space of 2D-drawings. Thus, $v$ maps any scoring profile it is given to a static picture.
+
+\section{Tasks and visualization}
+To make our interest concrete, let us start by proposing two kinds of tasks that will illustrate the usefulness of this classification. 
+Those tasks can be registered under the explainable-AI movement, which studies ways of letting users understand the result of procedures developped in artificial intelligence.
+
+\subsection{Train to identify winners}
+The first kind of task is: given a visualization $v$ and a voting rule $f$, train the user to compute the winners $f(\prof)$, given $v(\prof)$, for any profile $\prof \in \allprofs$. This is done in two phases. First, in the training phase, the user is shown a profile $\prof$, using $v(\prof)$ and other visualizations selected by the trainer $v_1(\prof)$, $v_2(\prof)$, …, and the winners $f(\prof)$, which (hopefully) help him understand how the winner is computed. Second, in the test phase, the user is shown only the profile with the imposed visualization, and has to find the winner by himself.
+
+For this kind of task, we expect it will be helpful to the user to see the profile with varying informational content (varying interpretations). For example, for computing the Condorcet winner, it might be helpful in the training phase to see the starting profile, the profile reduced to its majority graph information, and the resulting Condorcet winner. For computing the Borda winners, it might be helpful, starting from the profile considered as linear orders, to train the user by showing the profile enriched with the score information per voter, then go to the score per alternative view, and finally show the Borda winners.
+
+In this article we suggest a default algorithm to help such a trainer select the intermediate visualizations $v_1, v_2, …$; and help define the task itself by providing a set of possible visualizations $V$ among which to pick $v$.
+
+Broadly speaking, our default algorithm is that, given a voting rule $f$, we search for an interpretation $\sim$, as poor as possible, that conserves the information useful to $f$: such that $f(\prof) = f(\prof')$ if $\prof \sim \prof'$. (This information is generally known in the literature from axiomatic analysis, or obvious, for most well-known voting rules.) This is then used to find appropriate visualizations.
+
+\subsection{Compare voting rules}
+The second kind of task is a comparison task.  Here we wish to illustrate visually the difference of “reasoning” of two voting rules $f^1$ and $f^2$. Using a principle similar to the one described above, we would search for an interpretation $\sim^i$ corresponding to the poorest equivalence relation (among our set of proposals described below) that conserves the information useful to $f^i$, for $i \in \set{1, 2}$. Define $\sim^*$ the least upper bound of $\sim^1$ and $\sim^2$, thus, the poorest equivalence relation that is richer than both $\sim^1$ and $\sim^2$. Then we show, to illustrate $f^1$ and $f^2$ on $\prof$, the interpretation of $\prof$ using a visualization appropriate for $\sim^*$, then on opposite sides of the screen, a visualization appropriate for $\sim^i$ and the winners according to $f^i$, $i \in \set{1, 2}$. \commentOC{Should probably be moved where it can be understood.}
+
+Or something like that.
+
+\section{Information in a profile}
+Here we indicate which information a profile contains.
+We will relate this to visual variables in a later section.
+
+Interestingly, depending on the purpose of the visualization, the informational content to be taken into account when considering a profile may change. In order to let the viewer focus on the relevant information, the informational content in the profile may be reduced. For example, if the focus is to explain the Condorcet property, it may be adequate to display only information necessary to deduce the majority graph. Or, when being interested in scoring rules, it may be desired to display only, for each alternative, the ranks it obtained, that is, a multi-set of ranks, neglecting the relation between the voters and the ranks. Conversely, in some cases, such as in the context of exemplifying a given voting rule, it may be desired to show more than the information contained in the profile. A prominent example is the one of scoring rules: when the scores to be used are known, what is to be aggregated may be viewed as the scores given by each voter to each alternative. In yet other cases, the information to be visualized is both poorer and richer (in different respects), as when showing, for each alternative, a multiset of scores with no individual link between the voters and the scores.
 
 In this section we want to classify systematically visualization approaches depending on the informational content to be taken into account, in order to move towards being able to select an appropriate visualization in a principled way. Informational content can be characterized thanks to an equivalence relation on the set of scoring profiles $\allprofs$. 
 \begin{description}
@@ -147,10 +174,7 @@ An equivalence relation $\sim$ on the set of scoring profiles is said to be fine
 	\label{fig:poorer}
 \end{figure}
 
-One of our goals is to select appropriate visualizations given a profile $\prof$ and an interpretation $\sim$ on a (partly) principled basis. In order to do this, we must first, for each interpretation, indicate what is to be visualized in order to pay due attention to the equivalence classes defined by $\sim$. Indeed, the numbers shown in a profile, or that can be deduced from the information present in a profile, relate to each others in different ways depending on the interpretation: in some cases, only ordinal comparisons matter, in other cases, more can be drawn from these numbers. 
-
-TODO: relate to visualization variables. Possibly, talk about how to switch from one representation to another (matrix of ranks to, say, the scores). Decide whether we should introduce other kinds of interpretations (which is probably useful only if we can think about relevant visualizations). For example, we might need the \emph{Majority} interpretation, such that two profiles are considered equivalent iff they have the same majority graph.
-
+\section{Describing visualizations}
 \subsection{Graphic variables}
 Giving a (possibly interactive) graphical representation to a data set is a way to make the information it contains more graspable to laymen, provided the representation is sound.
 The design of such representations is studied by the Information Visualisation community.
@@ -174,7 +198,9 @@ The \emph{color}, i.e.\ the hue independently of the grey level, is both $\equiv
 The \emph{orientation} can be used for $\equiv$ and, to a certain extend, for $\neq$, provided the shape of the mark does not present too much symmetries.
 Finally, the \emph{shape} of the mark can be used only for $\equiv$ if the various shapes are carefully chosen.
 
-\subsection{Relating informational content and visual variables}
+\section{Relating informational content and visual variables}
+Here we describe how we go (as automatically as possible) from the descriptions given so far to visualizations such as those illustrated in \cref{sec:grib}.
+
 Depending on the task that the visualisation is used for, different kind and richness of information should be presented. For example, if the task is to find a Condorcet winner given a profile, it seems adequate to choose a visualisation which allows to clearly see the majority graph (an information somewhat poorer than the rank profile, in the sense that the information class is wider). If the task is to find the Borda winners given a profile, the visualisation could on the contrary enrich the rank profile by giving access to the scores, and it should do so by encouraging the user to perform quantitative comparisons (Q) rather than just permit ordinal comparisons as is adequate with ranks information or majority-graph information.
 
 Given a scoring profile $\prof$ and an interpretation under the form of an equivalence relation $\sim$ on the set of profiles, we can define which information should be visible in a visualization of $\prof$ under $\sim$. To check that this summarized information is appropriate, we can check that any two equivalent profiles (according to $\sim$) have the same summarized information (in which case the summary contains no more than allowed); and that any two non equivalent profiles have different visualization (in which case the summary contains no less than allowed). 
@@ -188,23 +214,6 @@ We write $O$ to refer to an ordering, $I$ to indicate an information of interval
 	\item[SS] $a, ss→Q$
 	\item[SC] $a, s→Q, c→P$
 \end{description}
-
-\section{From equivalence relations to visualization}
-Here we describe how we go (as automatically as possible) from the descriptions given so far to visualizations such as those illustrated in \cref{sec:grib}.
-
-\section{Tasks and visualization}
-We wish to illustrate the usefulness of this classification on two kinds of tasks. 
-
-\subsection{Train to identify winners}
-The first kind of task is: train the user to compute some kind of winners by himself, given a profile viewed in a given way. This is done in two phases. First, in the training phase, the user is shown a profile, using some (possibly several) visualizations, to help him understand what is expected from him and how the winner is computed. Second, in the test phase, the user is shown only the profile with the imposed visualization, and has to find the winner by himself.
-
-For this kind of task, we expect it will be helpful to the user to see the profile with varying informational content (varying interpretations). For example, for computing the Condorcet winner, it might be helpful in the training phase to see the starting profile, the profile reduced to its majority graph information, and the resulting Condorcet winner. For computing the Borda winners, it might be helpful, starting from the profile considered as linear orders, to train the user by showing the profile enriched with the score information per voter, then go to the score per alternative view, and finally show the Borda winners.
-
-Generally, given a voting rule $f$, we search for an interpretation $\sim$, as poor as possible, that conserves the information useful to $f$: such that $f(\prof) = f(\prof')$ if $\prof \sim \prof'$. (This information is generally known in the literature from axiomatic analysis, or obvious, for most well-known voting rules.) In general, for voting rules (working on ordinal profiles), we search an interpretation poorer than or equal to OM-NC, with the exception of scoring rules. 
-
-The second kind of task is a comparison task.  Here we wish to illustrate visually the difference of “reasoning” of two voting rules. Using a principle similar to the one described above, we would search for an interpretation $\sim$ corresponding to the poorest equivalence relation (among our set of proposals described above) that conserves the information useful to $f$, and $\sim'$ corresponding to $f'$. Define $\sim^*$ the least upper bound of $\sim$ and $\sim'$, thus, the poorest equivalence relation that is richer than both $\sim$ and $\sim'$. Then we show, to illustrate $f$ and $f'$ on $\prof$, the interpretation of $\prof$ using $\sim^*$, then on one side of the screen, $\sim$ and the winners according to $f$; on the other side of the screen, $\sim'$ and the winners according to $f'$.
-
-Or something like that.
 
 \bibliography{Visu,manual}
 \appendix
