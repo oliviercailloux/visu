@@ -174,7 +174,7 @@ An equivalence relation $\sim$ on the set of scoring profiles is said to be fine
 	\label{fig:poorer}
 \end{figure}
 
-\section{Describing visualizations}
+\section{Visualizations}
 \subsection{Graphic variables}
 Giving a (possibly interactive) graphical representation to a data set is a way to make the information it contains more graspable to laymen, provided the representation is sound.
 The design of such representations is studied by the Information Visualisation community.
@@ -198,6 +198,9 @@ The \emph{color}, i.e.\ the hue independently of the grey level, is both $\equiv
 The \emph{orientation} can be used for $\equiv$ and, to a certain extend, for $\neq$, provided the shape of the mark does not present too much symmetries.
 Finally, the \emph{shape} of the mark can be used only for $\equiv$ if the various shapes are carefully chosen.
 
+\subsection{Categorization of visualizations}
+Here we describe a synthetic language that allow to indicate which information in a profile is displayed, where, and how, and to derive properties of those visualizations that indicate which kind of comparisons it permits. (TODO: get inspiration from \cref{sec:grib}.)
+
 \section{Relating informational content and visual variables}
 Here we describe how we go (as automatically as possible) from the descriptions given so far to visualizations such as those illustrated in \cref{sec:grib}.
 
@@ -205,7 +208,7 @@ Depending on the task that the visualisation is used for, different kind and ric
 
 Given a scoring profile $\prof$ and an interpretation under the form of an equivalence relation $\sim$ on the set of profiles, we can define which information should be visible in a visualization of $\prof$ under $\sim$. To check that this summarized information is appropriate, we can check that any two equivalent profiles (according to $\sim$) have the same summarized information (in which case the summary contains no more than allowed); and that any two non equivalent profiles have different visualization (in which case the summary contains no less than allowed). 
  Note that this does not guarantee absence of redundant information.
-We write $O$ to refer to an ordering, $I$ to indicate an information of interval scale type, and $A$ for absolute, where no transformation of the numbers is allowed. For example, under the OM-NC interpretation, it should be possible to determine, for each voter, the ordering of the alternatives, which we write as an ordering over the scores.
+We write $O$ to refer to an ordering, $I$ to indicate an information of interval scale type, and $A$ for absolute, where no transformation of the numbers is allowed. For example, under the OM-NC interpretation, it should be possible to determine, for each voter, the ordering of the alternatives, which we write as an ordering over the scores. \commentOC{I don’t think this is a very good starting point. This should probably be done after the language for describing visualizations.}
 \begin{description}
 	\item[CM-FC] $a, v, s→I$ (Interval scale)
 	\item[OM-NC] $a, v, s→O$
