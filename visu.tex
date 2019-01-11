@@ -109,7 +109,7 @@ To make our interest concrete, let us start by proposing two kinds of tasks that
 Those tasks can be registered under the explainable-AI movement, which studies ways of letting users understand the result of procedures developped in artificial intelligence.
 
 \subsection{Train to identify winners}
-The first kind of task is: given a visualization $v$ and a voting rule $f$, train the user to compute the winners $f(\prof)$, given $v(\prof)$, for any profile $\prof \in \allprofs$. This is done in two phases. First, in the training phase, the user is shown a profile $\prof$, using $v(\prof)$ and other visualizations selected by the trainer $v_1(\prof)$, $v_2(\prof)$, …, and the winners $f(\prof)$, which (hopefully) help him understand how the winner is computed. Second, in the test phase, the user is shown only the profile with the imposed visualization, and has to find the winner by himself.
+The first kind of task is: given a visualization $v$ and a voting rule $f$, train the user to compute the winners $f(\prof)$, given $v(\prof)$, for any profile $\prof \in \allprofs$. This is done in two phases. First, in the training phase, the user is shown a profile $\prof$, using $v(\prof)$ and other visualizations selected by the trainer $v_1(\prof)$, $v_2(\prof)$, …, and the winners $f(\prof)$. The trainer has selected beforehand supplementary visualizations $\set{v_i}$ with the hope to help the user understand how the winner is computed. Second, in the test phase, the user is shown only the profile using only the imposed visualization $v(\prof)$, and has to find the winner by himself. Such task could be used either to experimentally compare training procedures, actually, compare different sets of supplementary visualizations; or to get an experimental idea of the difficulty of understanding various voting rules.
 
 For this kind of task, we expect it will be helpful to the user to see the profile with varying informational content (varying interpretations). For example, for computing the Condorcet winner, it might be helpful in the training phase to see the starting profile, the profile reduced to its majority graph information, and the resulting Condorcet winner. For computing the Borda winners, it might be helpful, starting from the profile considered as linear orders, to train the user by showing the profile enriched with the score information per voter, then go to the score per alternative view, and finally show the Borda winners.
 
@@ -199,16 +199,68 @@ The \emph{orientation} can be used for $\equiv$ and, to a certain extend, for $\
 Finally, the \emph{shape} of the mark can be used only for $\equiv$ if the various shapes are carefully chosen.
 
 \subsection{Categorization of visualizations}
-Here we describe a synthetic language that allow to indicate which information in a profile is displayed, where, and how, and to derive properties of those visualizations that indicate which kind of comparisons it permits. (TODO: get inspiration from \cref{sec:grib}.)
+Here we describe a synthetic language that describes visualizations. The descriptions should: permit to evaluate for which interpretation a visualization is or is not appropriate; permit to identify all important aspects of a visualization, in particular, allow to indicate which information in a profile is displayed, where, and how; and permit to combine multiple visualizations in order to build a single image displaying multiple interpretations of a given profile. (TODO: get inspiration from \cref{sec:grib}.)
+
+We consider the input of a visualization to be always a scoring profile. Variables $\var{a}, \var{v}$ can be used in the description, referring to alternatives and voters. These are supplemented by dynamic variables, which refer to information that can be deduced from a profile. Dynamic variables are considered part of the definition of a visualization and not part of our description language, so that variables can be added without changing the language. Below, the dynamic variable $\var{r}$ refers to $\intvl{1, m}$, the possible ranking positions; and $\var{r}(\var{a}, \var{v})$ refers to the function which gives the position of $a$ according to $v$, thus a number in $\intvl{1, m}$. Abusing notation slightly, we consider $\var{v}$ as a set when it is used alone, and as a function when it is used with parenthesis or when specified explicity. We use similarly $\var{s}$ and $\var{s}(\var{a}, \var{v})$ to refer to the scores and the scoring function. Also, strict orderings are defined for each variable: $<_\var{a}$ on $\allalts$, $<_\var{v}$ on $\allvoters$, and orderings for the dynamic variables. In our examples, $<_\var{r}$ represents the classical ordering on the positive integers and $<_\var{s}$ the one on the reals.
+
+A visualization is described using a set of description parts. A part is a left hand side, an arrow, and a right hand side. The following parts are legal.
+\begin{description}
+	\item[$\var{w}→X$] partitions $X$ into equal-sized intervals and assigns those intervals to the values of $\var{w}$, from left to right, in the order given by $>_\var{w}$. A similar definition holds for $Y$, from top to bottom.
+	\item[$(\var{w}, \textnormal{prop})/\var{y}→X$] (where $y$ is assigned to intervals of $Y$ and where $\var{w}$ is a function of $\var{y}$ and possibly other parameters) iterates on the values of $\var{y}$. For each $y \in \var{y}$ and each $w \in \var{w}$, it counts the proportion of inputs to the function $\var{w}$ with value $y$ that give value $w$. For each $y$, it cuts $X$ into intervals whose sizes follow those proportions, ordered according to $<_\var{w}$. This defines, for each $y$ and $w$, a 2D area composed of the interval of $X$ just described and the interval of $Y$ associated to $y$. It assigns those areas to the corresponding pairs $(w, y)$. Now the pair $(w, y)$ is considered assigned to both an interval of $X$ and an interval of $Y$. A similar definition holds where $X$ is replaced by $Y$ everywhere, and conversely $Y$ by $X$.
+	\item[$\var{w}/\var{x}→SX$] (where $x$ is associated to intervals of $X$) sub-divides every interval of $X$ (corresponding to some $x$) into equals sub-intervals, one for each $w$, and associates to each $(x, w)$ the corresponding sub-interval.
+	\item[$\var{w}/\var{x}, \var{y}→SX$] (where $\var{x}, \var{y}$ are associated to intervals of $X$ and $Y$ and $\var{w}$ is a function of $\var{x}$ and $\var{y}$) iterates over the pairs $(x, y)$. For each $(x, y)$, it uses $\var{w}(x, y) \in \R$ to compute a proportion of the interval of $X$ associated to $\var{x}$: if the value is zero, the empty interval is returned; if the value is $M$ (a value considered defined once and for all for the visualization using this description), the full interval is returned. This defines a 2D area, which gets associated to the triple $(w, x, y)$.
+	\item[$\var{w}/\var{x}, \var{y}→X$] similar, where $\var{x}$ may not be associated to an interval of $X$ and instead of computing a proportion of that interval, a proportion of the whole $X$ size is determined.
+	\item[$\var{w}/\var{x}, \var{y}→Z$] (where $Z$ is the treatment letter $C$, $T$ or $L$, where $\var{w}$ is a function of $\var{x}$ and $\var{y}$ and where the pairs $(x, y)$ must be assigned to intervals of both $X$ and $Y$) iterates on the values of $\var{w}$. For each $w \in \var{w}$, it considers the set of values of $\var{x}$ and $\var{y}$ that are associated to $w$. This defines a set of zones in the 2D space through the intervals associated to the pairs $(x, y)$. The treatment $Z$ is applied to those zones, depending on the value $w$. Letters $C$, $T$ and $L$ represent Color, Texture and Line. For example, in case $Z=C$, a color is chosen depending on $w$, and used to fill the corresponding zones. Note that a pair $(x, y)$ is considered assigned to intervals of both $X$ and $Y$ if the intervals have been assigned using different description entries, or if a 2D area has been assigned to the pair $(x, y)$. \commentOC{This definition is not entirely satisfactory as it’s not necessarily two variables that are associated to intervals, can be a pair or a triplet. We probably need to have a variable that represents the parameter of $\var{w}$ and a function that transforms this parameter into a set of variable values assigned together to a 2D area.}
+\end{description}
+The part of a description including the slash and what follows it can be omitted if this causes no ambiguity. Not all sets of parts are legal, as there are constraints on which bindings must be present for certain parts. If a description includes no treatment, then a “fill” treatment is considered implicit (\cref{it:vert,it:squares} for example).
+
+\begin{figure}
+	\begin{tikzpicture}
+		\path node[anchor=south west, inner sep=0] (image) {\includegraphics[trim={400 300 150 700}, clip, width=\textwidth, keepaspectratio]{Gribouillis1.jpeg}};
+		%thx https://tex.stackexchange.com/a/9561
+		\begin{scope}[x={(image.south east)},y={(image.north west)}]
+%			\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+%			\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+%			\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+			\tikzset{nbmark/.style={draw, yellow, circle, inner sep=0.4ex}}
+			\foreach \p [count=\i] in {(0.05, 0.97), (0.25, 0.97), (0.02, 0.6), (0.24, 0.6), (0.52, 0.7), (0.8, 0.75), (0.48, 0.5), (0.9, 0.5), (0.22, 0.3), (0.45, 0.3), (0.81, 0.2)} {
+				\path \p node[anchor=north west, nbmark] {\i};
+			}
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Gribouillis1}
+	\label{fig:g1}
+\end{figure}
+Illustrations about \cref{fig:g1}. $\var{r-1}$: rank minus one (zero-based rank), $\var{n}$: nb times; $XI\alpha$: x interval (varying interval size with minimal size=$\alpha$, $\alpha \in \{0, 1\}$). \commentOC{Bold omitted because I’m lazy.}
+\begin{enumerate}
+	\item TBD
+	\item TBD
+	\item $v→X, a→Y, r-1→SY$
+	\item $v→X, a→Y, r-1→SX$
+	\item $v→X, a→Y, r→L$
+	\item $v→X, r→Y, a→C$
+	\item Two parts.
+	\begin{description}
+		\item[left] $v→X, a→Y, r→SX, r→SY$
+		\item[right] $a→Y; r→SY; n/a, r→X$ ($n$ represents the number of times that $a$ got rank $r$)
+	\end{description}
+	\item $a→Y; (n, \textnormal{prop})/a→X; r→T$ (hence, visible that the sum is constant)
+	\item $v→X, a→Y, r→T$
+	\item \label{it:vert} $v→X, a→Y, r→SX$
+	\item \label{it:squares} $r→X, a→Y, n→SX, n→SY$
+\end{enumerate}
+TODO. Continue with \cref{fig:g2} (if considered relevant) (see \cref{sec:grib}).
 
 \section{Relating informational content and visual variables}
 Here we describe how we go (as automatically as possible) from the descriptions given so far to visualizations such as those illustrated in \cref{sec:grib}.
 
-Depending on the task that the visualisation is used for, different kind and richness of information should be presented. For example, if the task is to find a Condorcet winner given a profile, it seems adequate to choose a visualisation which allows to clearly see the majority graph (an information somewhat poorer than the rank profile, in the sense that the information class is wider). If the task is to find the Borda winners given a profile, the visualisation could on the contrary enrich the rank profile by giving access to the scores, and it should do so by encouraging the user to perform quantitative comparisons (Q) rather than just permit ordinal comparisons as is adequate with ranks information or majority-graph information.
+TODO we have two tasks. First, indicate that $\prof \sim \prof' \iff v(\prof) = v(\prof')$ is good (as described below); second, answer the question: does the drawing encourage “wrong” operations (such as comparing size of scores under an ordinal interpretation) or discourage permitted operation (as for example when differentiating ranks with color or not permitting easy comparison of the number of scores for a given alt). Note that selecting a color arbitrarily to associate it to a rank does not introduce comparison operations whereas selecting a line width does.
+
+Depending on the task that the visualisation is used for, different kind and richness of information should be presented. For example, if the task is to find a Condorcet winner given a profile, it seems adequate to choose a visualisation which allows to clearly see the majority graph (an information somewhat poorer than the rank profile, in the sense that the information class is wider). If the task is to find the Borda winners given a profile, the visualisation could on the contrary enrich the rank profile by giving access to the scores, and it should do so by encouraging the user to perform quantitative comparisons (Q) rather than just permit ordinal comparisons as is adequate with ranks information or majority-graph information. \commentOC{To rephrase. This mixes up two things that should better be kept separate. The equivalence classes on a profile (interpretation) should not change, we can simply adopt a richer visualization (paying the price by having a visualization that may encourage irrelevant operations).}
 
 Given a scoring profile $\prof$ and an interpretation under the form of an equivalence relation $\sim$ on the set of profiles, we can define which information should be visible in a visualization of $\prof$ under $\sim$. To check that this summarized information is appropriate, we can check that any two equivalent profiles (according to $\sim$) have the same summarized information (in which case the summary contains no more than allowed); and that any two non equivalent profiles have different visualization (in which case the summary contains no less than allowed). 
  Note that this does not guarantee absence of redundant information.
-We write $O$ to refer to an ordering, $I$ to indicate an information of interval scale type, and $A$ for absolute, where no transformation of the numbers is allowed. For example, under the OM-NC interpretation, it should be possible to determine, for each voter, the ordering of the alternatives, which we write as an ordering over the scores. \commentOC{I don’t think this is a very good starting point. This should probably be done after the language for describing visualizations.}
+We write $O$ to refer to an ordering, $I$ to indicate an information of interval scale type, and $A$ for absolute, where no transformation of the numbers is allowed. For example, under the OM-NC interpretation, it should be possible to determine, for each voter, the ordering of the alternatives, which we write as an ordering over the scores. \commentOC{Now I don’t think this is useful. We should directly talk about the visualizations as described above.}
 \begin{description}
 	\item[CM-FC] $a, v, s→I$ (Interval scale)
 	\item[OM-NC] $a, v, s→O$
@@ -223,25 +275,6 @@ We write $O$ to refer to an ordering, $I$ to indicate an information of interval
 \section{Gribouilling}
 \label{sec:grib}
 Let’s see what we gribouilled, to help us with the task of categorization.
-
-\begin{figure}
-	\includegraphics[trim={400 300 150 700}, clip, width=\textwidth, height=9cm, keepaspectratio]{Gribouillis1.jpeg}
-	\caption{Gribouillis1}
-	\label{fig:g1}
-\end{figure}
-
-\Cref{fig:g1}, from top left, by line. $r$: rank, $v$: voter, $a$: alternative, $n$: nb times; $L$: line width, $SX$: sub-x, $C$: color, $XI\alpha$: x interval (varying interval size with minimal size=$\alpha$, $\alpha \in \{0, 1\}$), $T$: texture
-\begin{enumerate}
-	\item $v→X, a→Y, r→SYI0$
-	\item $v→X, a→Y, r→SXI0$
-	\item $v→X, a→Y, r→L$
-	\item $v→X, r→Y, a→C$
-	\item $voters / aggregation→X, v→SX, a→Y, r→SSX[X=left], n→SXI0[X=right], r→SY$
-	\item $n→XI1, r→T, a→Y$ (hence, visible that the sum is constant)
-	\item $v→X, a→Y, r→T$
-	\item $v→X, a→Y, r→SX$
-	\item $r→X, a→Y, n→SXI1, n→SYI1$
-\end{enumerate}
 
 \begin{figure}
 	\includegraphics[trim={0 200 0 600}, clip, width=\textwidth, height=9cm, keepaspectratio]{Gribouillis2.jpeg}
